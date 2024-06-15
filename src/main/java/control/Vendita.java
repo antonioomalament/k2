@@ -115,7 +115,7 @@ public class Vendita extends HttpServlet {
         if (input == null) {
             return null;
         }
-        return input.replaceAll("[<>\"'/]", "");
+         return input.replaceAll("[<>\"'/]", "");
        
     }
 
