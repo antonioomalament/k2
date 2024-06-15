@@ -60,7 +60,7 @@ public class Vendita extends HttpServlet {
 		                }
 		                else {
 		                	if (item.getFieldName().compareTo("nome") == 0) {
-		                		product.setNome(item.getString());
+		                		product.setNome(sanitizeInput(item.getString()));
 		                	}
 		                	else if (item.getFieldName().compareTo("prezzo") == 0) {
 		                		product.setPrezzo(Double.parseDouble(item.getString()));
@@ -69,13 +69,13 @@ public class Vendita extends HttpServlet {
 		                		product.setSpedizione(Double.parseDouble(item.getString()));
 		                	}
 		                	else if (item.getFieldName().compareTo("tipologia") == 0) {
-		                		product.setTipologia(item.getString());
+		                		product.setTipologia(sanitizeInput(item.getString()));
 		                	}
 							else if (item.getFieldName().compareTo("tag") == 0) {
-								product.setTag(item.getString());
+								product.setTag(sanitizeInput(item.getString()));
 							}
 							else if (item.getFieldName().compareTo("descrizione") == 0) {
-		                		product.setDescrizione(item.getString());
+		                		product.setDescrizione(sanitizeInput(item.getString()));
 		                	}
 		                }
 		            }
@@ -84,13 +84,12 @@ public class Vendita extends HttpServlet {
 		           request.setAttribute("message", "File Uploaded Successfully");
 		           
 		        } catch (Exception ex) {
-		           
+		        	  request.setAttribute("message", "File Upload Failed due to " + ex);
 		        }          
 
 		    }
 		    else{
-		        request.setAttribute("message",
-		                             "Sorry this Servlet only handles file upload request");
+		        request.setAttribute("message", "Sorry this Servlet only handles file upload request");
 		       
 		    }
 		    ProductModel model = new ProductModel();
@@ -112,5 +111,12 @@ public class Vendita extends HttpServlet {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
+	private String sanitizeInput(String input) {
+        if (input == null) {
+            return null;
+        }
+        return input.replaceAll("[<>\"'/]", "");
+       
+    }
 
 }
